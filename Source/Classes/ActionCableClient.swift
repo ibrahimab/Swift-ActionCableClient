@@ -79,8 +79,8 @@ open class ActionCableClient {
     }
 
     open var origin : String? {
-        get { return request.value(forHTTPHeaderField: 'Origin') }
-        set { request.setValue(newValue, forHTTPHeaderField: 'Origin') }
+        get { return request.value(forHTTPHeaderField: "Origin") }
+        set { request.setValue(newValue, forHTTPHeaderField: "Origin") }
     }
 
     /// Initialize an ActionCableClient.
