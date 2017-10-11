@@ -23,12 +23,12 @@
 import Foundation
 
 public enum RetryStrategy {
-  
+
   case exponentialBackoff(maxRetries: Int, maxIntervalTime: TimeInterval)
   case logarithmicBackoff(maxRetries: Int, maxIntervalTime: TimeInterval)
   case linear(maxRetries: Int, intervalTime: Int)
   case none
-  
+
   func calculateInterval(_ retries : Int) -> TimeInterval  {
     switch self {
     case .logarithmicBackoff(let maxRetries, let maxIntervalTime):
@@ -51,21 +51,21 @@ public enum RetryStrategy {
 internal class RetryHandler : NSObject {
     var retries : Int = 0
     var strategy: RetryStrategy
-    var callback: ((Void) -> (Void))?
+    var callback: (() -> (Void))?
     var timer: Timer?
-    
+
     internal required init(strategy : RetryStrategy) {
         self.strategy = strategy
     }
-    
-    func retry(_ callback: @escaping ((Void) -> (Void)))  {
+
+    func retry(_ callback: @escaping (() -> (Void)))  {
         self.retries += 1
-        
+
         // Save callback
         self.callback = callback
-      
+
         if let aTimer = self.timer { aTimer.invalidate() }
-      
+
         // Calculate interval based on strategy
         let interval: TimeInterval = self.strategy.calculateInterval(self.retries)
 
@@ -77,14 +77,14 @@ internal class RetryHandler : NSObject {
                 repeats: false)
         }
     }
-    
-    internal func fire(_ timer : Timer) {
-      
+
+    @objc internal func fire(_ timer : Timer) {
+
         if let callback = self.callback {
             callback()
         }
     }
-    
+
     deinit {
         // Clean Up
         if let timer = self.timer {

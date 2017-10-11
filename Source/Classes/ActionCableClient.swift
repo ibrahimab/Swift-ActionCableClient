@@ -78,8 +78,8 @@ open class ActionCableClient {
     }
 
     open var origin : String? {
-        get { return socket.origin }
-        set { socket.origin = newValue }
+        get { return socket.value(forHTTPHeaderField: headerOriginName) }
+        set { socket.setValue(newValue, forHTTPHeaderField: headerOriginName) }
     }
 
     /// Initialize an ActionCableClient.
