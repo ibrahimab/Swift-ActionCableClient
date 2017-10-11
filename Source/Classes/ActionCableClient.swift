@@ -72,9 +72,9 @@ open class ActionCableClient {
     open var isConnected : Bool { return socket.isConnected }
     open var url: Foundation.URL { return socket.currentURL }
 
-    open var req: URLRequest
+    open var request: URLRequest
     open var headers : [String: String] {
-        get { return request.allHTTPHeaderFields }
+        get { return request.allHTTPHeaderFields! }
         set { request.allHTTPHeaderFields = newValue }
     }
 
