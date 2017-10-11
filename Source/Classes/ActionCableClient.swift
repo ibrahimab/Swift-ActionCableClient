@@ -73,13 +73,13 @@ open class ActionCableClient {
     open var url: Foundation.URL { return socket.currentURL }
 
     open var headers : [String: String] {
-        get { return socket.allHTTPHeaderFields }
-        set { socket.allHTTPHeaderFields = newValue }
+        get { return socket.request.allHTTPHeaderFields }
+        set { socket.request.allHTTPHeaderFields = newValue }
     }
 
     open var origin : String? {
-        get { return socket.value(forHTTPHeaderField: headerOriginName) }
-        set { socket.setValue(newValue, forHTTPHeaderField: headerOriginName) }
+        get { return socket.request.value(forHTTPHeaderField: headerOriginName) }
+        set { socket.request.setValue(newValue, forHTTPHeaderField: headerOriginName) }
     }
 
     /// Initialize an ActionCableClient.
