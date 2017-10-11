@@ -72,14 +72,15 @@ open class ActionCableClient {
     open var isConnected : Bool { return socket.isConnected }
     open var url: Foundation.URL { return socket.currentURL }
 
+    open var req: URLRequest
     open var headers : [String: String] {
-        get { return socket.request.allHTTPHeaderFields }
-        set { socket.request.allHTTPHeaderFields = newValue }
+        get { return request.allHTTPHeaderFields }
+        set { request.allHTTPHeaderFields = newValue }
     }
 
     open var origin : String? {
-        get { return socket.request.value(forHTTPHeaderField: headerOriginName) }
-        set { socket.request.setValue(newValue, forHTTPHeaderField: headerOriginName) }
+        get { return request.value(forHTTPHeaderField: 'Origin') }
+        set { request.setValue(newValue, forHTTPHeaderField: 'Origin') }
     }
 
     /// Initialize an ActionCableClient.
@@ -93,7 +94,8 @@ open class ActionCableClient {
     ///  ```
     public required init(url: URL) {
         /// Setup Initialize Socket
-        socket = WebSocket(url: url)
+        request = URLRequest(url: url)
+        socket = WebSocket(request: request)
         setupWebSocket()
     }
 
